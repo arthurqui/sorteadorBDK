@@ -1,2 +1,2 @@
 # sorteadorBDK
-sorteador de numeros
+sorteador de numeros básico

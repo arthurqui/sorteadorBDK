@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sorteador BDK</title>
+    <style>
+       body {
+        font-family: Arial, sans-serif;
+        background-color: #252525;
+        color:#fff;
+        padding: 20px;
+        text-align: center; /* Centralizar os cards horizontalmente */
+		 display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  justify-content: center;
+		  height: 100vh;
+		  margin: 0;
+        }
+
+        /* Estilos para o modo escuro */
+        .dark-mode {
+            background-color: #f0f0f0; /* Cor de fundo escura */
+            color: black; /* Cor do texto clara */
+        }
+        
+                .teste {
+            text-align: left;
+            font-weight: bold; /* Define o peso da fonte como negrito */
+        }
+		
+				label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      margin-bottom: 15px;
+      padding: 5px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+      display: none; /* Inicialmente oculto */
+      font-size: 1.5em;
+      color: green;
+      animation: fadeIn 1s ease-in-out; /* Animação de fade-in */
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    #countdown {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      color: red;
+      animation: countdown 5s linear; /* Animação de contagem regressiva */
+    }
+
+    @keyframes countdown {
+      from {
+        width: 100%;
+      }
+      to {
+        width: 0%;
+      }
+    }
+
+        /* Estilos para o botão toggle */
+        .toggle-button {
+            position: absolute;
+            top: 10px; /* Ajuste a posição vertical conforme necessário */
+            right: 10px; /* Ajuste a posição horizontal conforme necessário */
+            padding: 10px 20px;
+            background-color: #00000000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Estilos para o botão toggle quando ativado */
+        .toggle-button.active {
+            background-color: #ccc; /* Cor de fundo quando o modo claro está ativado */
+            color: #000; /* Cor do texto quando o modo claro está ativado */
+        }
+
+        .category-label {
+            font-size: 24px; /* Tamanho do rótulo da categoria */
+            margin-bottom: 10px; /* Espaçamento entre o rótulo e a categoria */
+            text-align: Left; /* Alinhar o rótulo à esquerda */
+        }
+
+        .category {
+            margin-bottom: 20px; /* Espaçamento entre categorias */
+            white-space: nowrap; /* Impedir que os cards quebrem para a próxima linha */
+            overflow-x: auto; /* Adicionar uma barra de rolagem horizontal quando necessário */
+            display: flex; /* Usar flexbox para o layout horizontal */
+        }
+
+        .category .card {
+            width: 200px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            vertical-align: top;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centralizar o conteúdo dentro do card */
+            color: #121212;
+        }
+
+        .category .card h2 {
+            font-size: 16px;
+        }
+
+        .category .card button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .category .card img {
+            width: 100px; /* Largura fixa */
+            height: 100px; /* Altura fixa */
+            max-width: 100%;
+            height: auto;
+        }
+
+        #editor {
+            width: 1000px; /* Largura ajustada para 90% da largura da tela */
+            height: 300px;
+            font-size: 16px;
+        }
+
+        #submitBtn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+		
+		#logo {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+        /* Estilo para centralizar a primeira categoria */
+        #category1 {
+            margin: 0 auto; /* Centralizar horizontalmente */
+            text-align: center; /* Centralizar o rótulo horizontalmente */
+        }
+
+        /* Estilos para telas menores (max-width: 768px) */
+        @media (max-width: 768px) {
+            .toggle-button {
+                top: 20px; /* Ajuste a posição vertical para telas menores */
+                right: 20px; /* Ajuste a posição horizontal para telas menores */
+            }
+        
+            .category-label {
+                font-size: 20px; /* Reduza o tamanho do rótulo da categoria para telas menores */
+                text-align: left; /* Alinhe o rótulo à esquerda para telas menores */
+            }
+        
+            .category {
+                flex-direction: column; /* Altere a direção do flexbox para empilhar os cards verticalmente */
+                align-items: center; /* Centralize os cards horizontalmente */
+            }
+        
+            .category .card {
+                width: 100%; /* Defina a largura dos cards para ocupar 100% da largura da tela */
+                margin: 10px 0; /* Adicione espaço superior e inferior aos cards */
+            }
+        
+            .category .card h2 {
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="dark-mode-toggle" class="toggle-button">🌞</button>
+	
+    <body>
+
+  <body>
+  <img id="logo" src="https://media.discordapp.net/attachments/404322104172085273/1181698718077038752/Sem_Titulo-1.png" alt="Logo">
+
+  <label for="inicio">Número inicial:</label>
+  <input type="number" id="inicio" min="1" required>
+
+  <label for="fim">Número final:</label>
+  <input type="number" id="fim" min="1" required>
+
+  <label for="quantidade">Quantidade de números a sortear:</label>
+  <input type="number" id="quantidade" min="1" required>
+
+  <button onclick="iniciarContagem()">Sortear</button>
+<br><br>
+  <div id="countdown"></div>
+  <br>
+  <div id="resultado"></div>
+
+  <script>
+    function iniciarContagem() {
+      var countdownElement = document.getElementById('countdown');
+      var resultadoElement = document.getElementById('resultado');
+
+      // Mostra o countdown e esconde o resultado
+      countdownElement.style.display = 'block';
+      resultadoElement.style.display = 'none';
+
+      var countdownValue = 5;
+      var countdownInterval = setInterval(function() {
+        countdownElement.innerText = countdownValue;
+        countdownValue--;
+
+        if (countdownValue < 0) {
+          clearInterval(countdownInterval);
+          realizarSorteio();
+        }
+      }, 1000);
+    }
+
+    function realizarSorteio() {
+      var inicio = parseInt(document.getElementById('inicio').value);
+      var fim = parseInt(document.getElementById('fim').value);
+      var quantidade = parseInt(document.getElementById('quantidade').value);
+
+      var numeros = [];
+
+      // Verifica se a quantidade de números a sortear é maior que o intervalo
+      if (quantidade > (fim - inicio + 1)) {
+        alert('A quantidade de números a sortear não pode ser maior que o intervalo.');
+        return;
+      }
+
+      for (var i = inicio; i <= fim; i++) {
+        numeros.push(i);
+      }
+
+      // Embaralha os números
+      for (var i = numeros.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = numeros[i];
+        numeros[i] = numeros[j];
+        numeros[j] = temp;
+      }
+
+      // Seleciona os primeiros 'quantidade' números
+      var numerosSorteados = numeros.slice(0, quantidade);
+
+      // Exibe os resultados de forma estilizada
+      var resultadoElement = document.getElementById('resultado');
+      resultadoElement.innerHTML = 'Números sorteados: <br>' + numerosSorteados.join(', ');
+
+      // Adiciona a animação de fade-in
+      resultadoElement.style.display = 'block';
+    }
+  </script>
+	
+
+
+
+
+	
+	
+
+   
+
+<script>
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const body = document.body;
+
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        darkModeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '🌞';
+    });
+</script>
+
+<script>
+    // Função para alternar a visibilidade do bloco de comandos
+    function toggleCommands() {
+        console.log('Botão pressionado');
+        var commandsBlock = document.getElementById('commands-block');
+        commandsBlock.style.display = (commandsBlock.style.display === 'none' || commandsBlock.style.display === '') ? 'block' : 'none';
+    }
+</script>
+
+
+
+
+
+</div>
+
+	
+	
+
+</body>
+</html>
